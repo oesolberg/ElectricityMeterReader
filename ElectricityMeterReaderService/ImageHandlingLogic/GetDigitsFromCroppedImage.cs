@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 
 namespace ElectricityMeterReaderService.ImageHandlingLogic
@@ -48,6 +49,8 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
 
         public DigitsAndDigitRectangles Process(Image<Bgr, byte> numberPlateImage)
         {
+            //Lighten numberPlageImage
+            //var lightenedNumberPlateImage = LightenNumberPlateImage(numberPlateImage);
 
             var digitData = new DigitsAndDigitRectangles();
             foreach (var digitTemplateInfo in _digitTemplateInfoList)
@@ -63,6 +66,15 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
                 return digitData;
             }
             return null;
+        }
+
+        private Image<Bgr,byte> LightenNumberPlateImage(Image<Bgr, byte> numberPlateImage)
+        {
+            var resultImage = numberPlateImage.ThresholdAdaptive(new Bgr(Color.White), AdaptiveThresholdType.MeanC, ThresholdType.Binary, 31, new Bgr(Color.Black));
+  
+                                  CvInvoke.Imshow("test",resultImage);
+            CvInvoke.WaitKey(0);
+            return resultImage;
         }
 
         private IEnumerable<DigitAndDigitRectangle> FindDigit(Image<Bgr, byte> source, DigitTemplateInfo digitTemplateInfo)

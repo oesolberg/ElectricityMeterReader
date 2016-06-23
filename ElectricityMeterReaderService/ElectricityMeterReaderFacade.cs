@@ -29,6 +29,7 @@ namespace ElectricityMeterReaderService
 
         }
 
+        
         protected override void OnStart(string[] args)
         {
             fileSystemWatcher.Filter = ConfigurationManager.AppSettings["filter"];
@@ -60,6 +61,11 @@ namespace ElectricityMeterReaderService
 
                 var imageHandler = new ElectricityImageHandler(e.FullPath);
                 var imageData=imageHandler.DoImageProcessing();
+                if (imageData != null)
+                {
+                    var dbStore = new DataStorage.DataStorageHandler();
+                    dbStore.DoStorage(imageData);
+                }
                 stopWatch.Stop();
                 
                 LogToConsoleIfPossible("Done processing image in " + stopWatch.ElapsedMilliseconds.ToString("N")+" ms");

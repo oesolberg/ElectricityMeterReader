@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using ElMeInterfaces;
 using Emgu.CV;
 using Emgu.CV.Structure;
 
@@ -21,7 +22,7 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
 
         //Process cropped numberplate and find numbers
 
-        public ImageData DoImageProcessing()
+        public IImageData DoImageProcessing()
         {
             //Find imageframe
             

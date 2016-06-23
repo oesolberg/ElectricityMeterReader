@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -34,25 +35,33 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
 
             Image<Bgr, byte> imageToReturn = null;
 
-
-            using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.Ccoeff))
+            try
             {
-                //Image<Gray, float> resultImage = result.Mul(resultMask.Pow(-1));
-                double[] minValues, maxValues;
-                Point[] minLocations, maxLocations;
-                result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
-
-                // You can try different values of the threshold. I guess somewhere between 0.75 and 0.95 would be good.
-                if (maxValues[0] > 0.9)
+                using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.Ccoeff))
                 {
-                    // This is a match. Do something with it, for example draw a rectangle around it.
-                    Rectangle match = new Rectangle(maxLocations[0], template.Size);
-                    var smallImage = CreateSmallImage(match, source, template.Size);
+                    //Image<Gray, float> resultImage = result.Mul(resultMask.Pow(-1));
+                    double[] minValues, maxValues;
+                    Point[] minLocations, maxLocations;
+                    result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
 
-                    //Try to export the inside image without the borders
-                    smallImage.ROI = new Rectangle(24, 22, 300, 54);
-                    imageToReturn = smallImage.Copy();
+                    // You can try different values of the threshold. I guess somewhere between 0.75 and 0.95 would be good.
+                    if (maxValues[0] > 0.9)
+                    {
+                        // This is a match. Do something with it, for example draw a rectangle around it.
+                        Rectangle match = new Rectangle(maxLocations[0], template.Size);
+                        var smallImage = CreateSmallImage(match, source, template.Size);
+
+                        //Try to export the inside image without the borders
+                        smallImage.ROI = new Rectangle(24, 22, 300, 54);
+                        imageToReturn = smallImage.Copy();
+                    }
                 }
+
+            }
+            catch (Exception)
+            {
+
+                return null;
             }
             return imageToReturn;
         }
