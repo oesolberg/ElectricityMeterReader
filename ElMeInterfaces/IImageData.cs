@@ -1,4 +1,5 @@
-﻿using Emgu.CV;
+﻿using System;
+using Emgu.CV;
 using Emgu.CV.Structure;
 
 namespace ElMeInterfaces
@@ -8,6 +9,11 @@ namespace ElMeInterfaces
     {
         Image<Bgr, byte> ImageCropped { get; set; }
         double ImageNumber { get; set; }
+
+        string OriginalFilename { get; set; }
+
+        DateTime CreatedDateTime { get; set; }
+
         Image<Bgr, byte> ImageWithDigitsOutlined { get; set; }
     }
 }

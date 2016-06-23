@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -11,11 +12,14 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
     public class ElectricityImageHandler
     {
         private string _pathToFileToProcess;
-        private readonly string _templatePath;
+        private readonly string _filename;
+        
 
         public ElectricityImageHandler(string filePath)
         {
             _pathToFileToProcess = filePath;
+            _filename = Path.GetFileName(filePath);
+            
         }
 
         //Find numberplate template and do crop if found
@@ -42,9 +46,16 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
             imageDataToReturn.ImageCropped = numberPlateImageUntouched;
             imageDataToReturn.ImageNumber = electricityMeterNumber;
             imageDataToReturn.ImageWithDigitsOutlined = finalImage;
+            imageDataToReturn.OriginalFilename = _filename;
+            imageDataToReturn.CreatedDateTime = GetCreatedDateTimeFromFile();
             //For now save the image with the electricity number as a part of the filename
             SaveImageToTempFolder(finalImage, electricityMeterNumber, _pathToFileToProcess);
             return imageDataToReturn;
+        }
+
+        private DateTime GetCreatedDateTimeFromFile()
+        {
+            return File.GetCreationTime(_pathToFileToProcess);
         }
 
         private static Image<Bgr, byte> GetFinalImage(Image<Bgr, byte> numberPlateImage, DigitsAndDigitRectangles foundDigitData)

@@ -20,7 +20,7 @@ namespace DataStorage
             }
           
             //Compare with db if we have a value
-            if (lastValueInDb>1 && ((lastValueInDb+ 100) < readElectricityNumber)) return false;
+            if (lastValueInDb>1 && ((readElectricityNumber<lastValueInDb) || ( readElectricityNumber > (lastValueInDb + 100)))) return false;
             
 
             return true;

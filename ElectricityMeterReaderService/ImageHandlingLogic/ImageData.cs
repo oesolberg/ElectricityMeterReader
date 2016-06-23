@@ -7,8 +7,10 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
 {
     public class ImageData : IImageData
     {
+        public DateTime CreatedDateTime { get; set; }
         public Image<Bgr,Byte> ImageWithDigitsOutlined { get; set; }
         public double ImageNumber { get; set; }
+        public string OriginalFilename { get; set; }
 
         public Image<Bgr,byte> ImageCropped { get; set; }
     }

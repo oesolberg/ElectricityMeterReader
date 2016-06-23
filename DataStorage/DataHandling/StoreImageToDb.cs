@@ -24,15 +24,16 @@ namespace DataStorage.DataHandling
             
         }
 
-        private ElectricityMeterData TransformImageDataToElectricityMeterData(IImageData imageData, bool isValidNumber)
+        private ElectricityData TransformImageDataToElectricityMeterData(IImageData imageData, bool isValidNumber)
         {
-            return new ElectricityMeterData()
+            return new ElectricityData()
             {
-                CreatedDateTime = DateTime.Now,
+                CreatedDateTime = imageData.CreatedDateTime,
                 ElectricityValue = (int)imageData.ImageNumber,
                 HasAcceptedElectricityValue = isValidNumber,
-                ImageOfFrame = imageData.ImageCropped.ToJpegData(100),
-                ImageOfFrameWithOutlines = imageData.ImageWithDigitsOutlined.ToJpegData(100)
+                JpgImageOfFrame = imageData.ImageCropped.ToJpegData(100),
+                JpgImageOfFrameWithOutlines = imageData.ImageWithDigitsOutlined.ToJpegData(100),
+                OriginalFilename = imageData.OriginalFilename
             };
         }
     }

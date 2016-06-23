@@ -81,7 +81,7 @@
     <Compile Include="Config\ConfigReader.cs" />
     <Compile Include="DataHandling\StoreImageToDb.cs" />
     <Compile Include="DataStorageHandler.cs" />
-    <Compile Include="DataHandling\ElectricityMeterData.cs" />
+    <Compile Include="DataHandling\ElectricityData.cs" />
     <Compile Include="DataHandling\GetPreviousValidNumber.cs" />
     <Compile Include="NumberValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

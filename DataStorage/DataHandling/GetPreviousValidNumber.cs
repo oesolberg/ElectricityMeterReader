@@ -14,7 +14,7 @@ namespace DataStorage
                 cn.Open();
                 //Person person = new Person { FirstName = "Foo", LastName = "Bar", Active = true, DateCreated = DateTime.Now };
                 //int id = cn.Insert(person);
-                var result = cn.Query<ElectricityMeterData>("Select top 1 * from ElectricityData where HasAcceptedElectricityValue=1 order by CreatedDateTime desc").FirstOrDefault();
+                var result = cn.Query<ElectricityData>("Select top 1 * from ElectricityData where HasAcceptedElectricityValue=1 order by CreatedDateTime desc").FirstOrDefault();
                 cn.Close();
                 if (result != null) return result.ElectricityValue;
             }
