@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ConfigReader.cs" />
+    <Compile Include="DataHandling\GetAllImageNames.cs" />
     <Compile Include="DataHandling\StoreImageToDb.cs" />
     <Compile Include="DataStorageHandler.cs" />
     <Compile Include="DataHandling\ElectricityData.cs" />
@@ -95,6 +96,9 @@
       <Project>{d4b1e7ec-aba2-44b6-a51f-fab675d1929c}</Project>
       <Name>ElMeInterfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DatabaseInfo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

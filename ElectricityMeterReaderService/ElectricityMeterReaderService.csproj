@@ -119,6 +119,7 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScanFolder\ProcessFolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

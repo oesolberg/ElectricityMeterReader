@@ -12,25 +12,26 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
     public class ElectricityImageHandler
     {
         private string _pathToFileToProcess;
-        private readonly string _filename;
-        
+        private string _filename;
 
-        public ElectricityImageHandler(string filePath)
+
+        public ElectricityImageHandler()
         {
-            _pathToFileToProcess = filePath;
-            _filename = Path.GetFileName(filePath);
-            
+
         }
 
         //Find numberplate template and do crop if found
 
         //Process cropped numberplate and find numbers
 
-        public IImageData DoImageProcessing()
+        public IImageData DoImageProcessing(string filePath)
         {
+            _pathToFileToProcess = filePath;
+            _filename = Path.GetFileName(filePath);
+
             //Find imageframe
-            
-            var imageDataToReturn=new ImageData();
+
+            var imageDataToReturn = new ImageData();
             var numberPlateImage = GetNumberPlateImage();
             if (numberPlateImage == null) return null;
             var numberPlateImageToUseForFinalImage = numberPlateImage.Clone();
@@ -47,15 +48,15 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
             imageDataToReturn.ImageNumber = electricityMeterNumber;
             imageDataToReturn.ImageWithDigitsOutlined = finalImage;
             imageDataToReturn.OriginalFilename = _filename;
-            imageDataToReturn.CreatedDateTime = GetCreatedDateTimeFromFile();
+            imageDataToReturn.FileCreatedDateTime = GetFileCreatedDateTime();
             //For now save the image with the electricity number as a part of the filename
-            SaveImageToTempFolder(finalImage, electricityMeterNumber, _pathToFileToProcess);
+            //SaveImageToTempFolder(finalImage, electricityMeterNumber, _pathToFileToProcess);
             return imageDataToReturn;
         }
 
-        private DateTime GetCreatedDateTimeFromFile()
+        private DateTime GetFileCreatedDateTime()
         {
-            return File.GetCreationTime(_pathToFileToProcess);
+            return File.GetLastWriteTime(_pathToFileToProcess);
         }
 
         private static Image<Bgr, byte> GetFinalImage(Image<Bgr, byte> numberPlateImage, DigitsAndDigitRectangles foundDigitData)
@@ -95,7 +96,7 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
 
         private void SaveImageWithNewName(Image<Bgr, byte> finalImage, string saveFolder, string newFileName)
         {
-            SaveJpeg(Path.Combine(saveFolder,newFileName),finalImage.ToBitmap(),100);
+            SaveJpeg(Path.Combine(saveFolder, newFileName), finalImage.ToBitmap(), 100);
         }
 
         private void SaveJpeg(string path, Bitmap img, long quality)

@@ -12,7 +12,7 @@ namespace ElMeInterfaces
 
         string OriginalFilename { get; set; }
 
-        DateTime CreatedDateTime { get; set; }
+        DateTime FileCreatedDateTime { get; set; }
 
         Image<Bgr, byte> ImageWithDigitsOutlined { get; set; }
     }

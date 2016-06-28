@@ -18,22 +18,23 @@ namespace ElectricityMeterReaderService
     public partial class ElectricityMeterReaderFacade : ServiceBase
     {
         private int _sleepInterval;
+        private string _folderToWatch;
+        private string _filefilter;
 
         public ElectricityMeterReaderFacade()
         {
             InitializeComponent();
             //fileSystemWatcher.Changed += fileSystemWatcher_Changed;
             fileSystemWatcher.Created += fileSystemWatcher_Changed;
-
-
-
         }
 
         
         protected override void OnStart(string[] args)
         {
-            fileSystemWatcher.Filter = ConfigurationManager.AppSettings["filter"];
-            fileSystemWatcher.Path = ConfigurationManager.AppSettings["folder"];
+            _filefilter= ConfigurationManager.AppSettings["filter"];
+            fileSystemWatcher.Filter = _filefilter;
+            _folderToWatch = ConfigurationManager.AppSettings["folder"];
+            fileSystemWatcher.Path = _folderToWatch;
             _sleepInterval = 10000;
             var sleepIntervalFromConfig = ConfigurationManager.AppSettings["sleepinterval"];
             int sleepIntervalFromConfigConvertedToInt;
@@ -41,6 +42,13 @@ namespace ElectricityMeterReaderService
             {
                 _sleepInterval = sleepIntervalFromConfigConvertedToInt;
             }
+            var stopWatch=new Stopwatch();
+            stopWatch.Start();
+            var folderScanner=new ScanFolder.ProcessFolder();
+            folderScanner.Execute(_folderToWatch,_filefilter);
+            stopWatch.Stop();
+            LogToConsoleIfPossible("Added missing images in "+ stopWatch.ElapsedMilliseconds.ToString("N1")+" ms.");
+            //ScanFolderAndProcessMissingImages();
 
         }
 
@@ -59,8 +67,8 @@ namespace ElectricityMeterReaderService
                 LogToConsoleIfPossible(e.FullPath);
                 LogToConsoleIfPossible(e.ChangeType.ToString());
 
-                var imageHandler = new ElectricityImageHandler(e.FullPath);
-                var imageData=imageHandler.DoImageProcessing();
+                var imageHandler = new ElectricityImageHandler();
+                var imageData=imageHandler.DoImageProcessing(e.FullPath);
                 if (imageData != null)
                 {
                     var dbStore = new DataStorage.DataStorageHandler();

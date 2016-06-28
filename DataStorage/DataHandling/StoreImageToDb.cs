@@ -28,7 +28,8 @@ namespace DataStorage.DataHandling
         {
             return new ElectricityData()
             {
-                CreatedDateTime = imageData.CreatedDateTime,
+                CreatedDateTime = DateTime.Now,
+                FileCreatedDateTime = imageData.FileCreatedDateTime,
                 ElectricityValue = (int)imageData.ImageNumber,
                 HasAcceptedElectricityValue = isValidNumber,
                 JpgImageOfFrame = imageData.ImageCropped.ToJpegData(100),

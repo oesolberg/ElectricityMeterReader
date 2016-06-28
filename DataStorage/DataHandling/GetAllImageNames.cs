@@ -1,12 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Dapper;
-using DataStorage.DataHandling;
 
-namespace DataStorage
+namespace DataStorage.DataHandling
 {
-    public class GetPreviousValidNumber
+    public class GetAllImageNames
     {
-        public double Execute()
+        public List<string> Execute()
         {
             var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (var cn = new System.Data.SqlClient.SqlConnection(connectionString))
@@ -14,11 +14,12 @@ namespace DataStorage
                 cn.Open();
                 //Person person = new Person { FirstName = "Foo", LastName = "Bar", Active = true, DateCreated = DateTime.Now };
                 //int id = cn.Insert(person);
-                var result = cn.Query<ElectricityData>("Select top 1 * from ElectricityData where HasAcceptedElectricityValue=1 order by FileCreatedDateTime desc").FirstOrDefault();
+                var result = cn.Query<string>("Select [OriginalFilename] from ElectricityData").ToList();
                 cn.Close();
-                if (result != null) return result.ElectricityValue;
+                if (result.Any())
+                    return result;
+                return new List<string>();
             }
-            return -1;
         }
     }
 }

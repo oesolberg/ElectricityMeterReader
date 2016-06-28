@@ -1,0 +1,28 @@
+﻿-- Database info
+USE [ElectricityMeterReadings]
+GO
+
+/****** Object:  Table [dbo].[ElectricityData]    Script Date: 6/23/2016 10:16:57 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+Drop table [dbo].[ElectricityData];
+
+CREATE TABLE [dbo].[ElectricityData](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ElectricityValue] [int] NOT NULL,
+	[ElectricityValueSetByUser] [int] NULL,
+	[JpgImageOfFrame] varbinary(max) NULL,
+	[JpgImageOfFrameWithOutlines] varbinary(max) NULL,
+	[OriginalFilename] nvarchar(255),
+	[FileCreatedDateTime] [datetime] NOT NULL,
+	[CreatedDateTime] [datetime] NOT NULL,
+	[ChangedDateTime] [datetime] NULL,
+	[HasAcceptedElectricityValue] [bit] NOT NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+

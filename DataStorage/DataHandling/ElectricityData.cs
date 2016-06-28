@@ -16,6 +16,7 @@ namespace DataStorage.DataHandling
 
         public byte[] JpgImageOfFrameWithOutlines { get; set; }
         public DateTime CreatedDateTime { get; set; }
+        public DateTime FileCreatedDateTime { get; set; }
 
         public DateTime? ChangedDateTime { get; set; }
         public bool HasAcceptedElectricityValue { get; set; }
