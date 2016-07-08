@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ElectricityMeterReaderService.ImageHandlingLogic;
@@ -37,6 +36,10 @@ namespace ElectricityMeterReaderService.ScanFolder
                 {
                     dbStore.DoStorage(imageData);
                 }
+                else
+                {
+                    dbStore.StoreFileInBlackList(fileToProcess.Filepath);
+                }
             }
         }
 
@@ -55,32 +58,6 @@ namespace ElectricityMeterReaderService.ScanFolder
                 missingFileList= missingFileList.OrderBy(f=>f.CreatedDateTime).ToList();
             }
             return missingFileList;
-        }
-    }
-
-    internal class MissingFileData
-    {
-        public string Filepath { get; set; }
-        public DateTime CreatedDateTime { get; set; }
-    }
-
-    public class FetchFilesFromWatchedFolder
-    {
-        private readonly string _folderToWatch;
-        private readonly string _filefilter;
-
-        public FetchFilesFromWatchedFolder(string folderToWatch, string filefilter)
-        {
-            _folderToWatch = folderToWatch;
-            _filefilter = filefilter;
-            
-        }
-
-        public List<string> Execute()
-        {
-             return Directory.GetFiles(_folderToWatch, _filefilter, SearchOption.AllDirectories).ToList();
-
-            
         }
     }
 }

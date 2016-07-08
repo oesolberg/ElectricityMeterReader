@@ -68,8 +68,16 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
 
         private static DigitsAndDigitRectangles GetDigitData(Image<Bgr, byte> numberPlateImage)
         {
+            var digitListCreator = new CreateDigitList();
+            var digitList = digitListCreator.Execute();
             var digitDataExtractor = new GetDigitsFromCroppedImage();
-            var foundDigitData = digitDataExtractor.Process(numberPlateImage);
+            var foundDigitData = digitDataExtractor.Process(numberPlateImage, digitList);
+            if (foundDigitData == null)
+            {
+                digitList = digitListCreator.Execute("_new");
+                foundDigitData = digitDataExtractor.Process(numberPlateImage, digitList);
+                //try to find in new format
+            }
             return foundDigitData;
         }
 

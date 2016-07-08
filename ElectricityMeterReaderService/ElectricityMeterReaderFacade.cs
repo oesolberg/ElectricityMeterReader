@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
-using System.Configuration;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,12 +41,7 @@ namespace ElectricityMeterReaderService
             {
                 _sleepInterval = sleepIntervalFromConfigConvertedToInt;
             }
-            var stopWatch=new Stopwatch();
-            stopWatch.Start();
-            var folderScanner=new ScanFolder.ProcessFolder();
-            folderScanner.Execute(_folderToWatch,_filefilter);
-            stopWatch.Stop();
-            LogToConsoleIfPossible("Added missing images in "+ stopWatch.ElapsedMilliseconds.ToString("N1")+" ms.");
+            
             //ScanFolderAndProcessMissingImages();
 
         }
@@ -58,11 +52,18 @@ namespace ElectricityMeterReaderService
 
         private void fileSystemWatcher_Changed(object sender, System.IO.FileSystemEventArgs e)
         {
+            var stopWatch = new Stopwatch();
             //Some file has changed.
+            stopWatch.Start();
+            var folderScanner = new ScanFolder.ProcessFolder();
+            folderScanner.Execute(_folderToWatch, _filefilter);
+            stopWatch.Stop();
+            LogToConsoleIfPossible("Added missing images in " + stopWatch.ElapsedMilliseconds.ToString("N1") + " ms.");
+
             Thread.Sleep(_sleepInterval); //Sleep 10 seconds to get the file when it is done saving
             if (e.ChangeType == WatcherChangeTypes.Created && FileExists(e.FullPath))
             {
-                var stopWatch=new Stopwatch();
+                stopWatch=new Stopwatch();
                 stopWatch.Start();
                 LogToConsoleIfPossible(e.FullPath);
                 LogToConsoleIfPossible(e.ChangeType.ToString());
