@@ -26,6 +26,17 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
 
         public IImageData DoImageProcessing(string filePath)
         {
+
+            //Need to refactor
+
+            /*
+             * 1. Objects for loading all the different template images. Should handle that we do not have all for the different placements (100.000, 10.000. 1.000, 100, 10,1
+             * 2. Check for matches doing the following. 
+             *      Trying to get the numberplate. 
+             *      Check found numberplate
+             *      If no numberplate found, check the whole image
+             * Get all the different results and check how the rectangles match. We will have more than one hit on most of the numbers so a lot of them will overlap. Clean it up and get a number like xxx.xxx
+            */
             _pathToFileToProcess = filePath;
             _filename = Path.GetFileName(filePath);
 

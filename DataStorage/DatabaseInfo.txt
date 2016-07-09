@@ -9,7 +9,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 Drop table [dbo].[ElectricityData];
-
+GO
 CREATE TABLE [dbo].[ElectricityData](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[ElectricityValue] [int] NOT NULL,
@@ -24,5 +24,26 @@ CREATE TABLE [dbo].[ElectricityData](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO
+
+USE [ElectricityMeterReadings]
+GO
+
+/****** Object:  Table [dbo].[FileBlacklist]    Script Date: 7/9/2016 8:21:46 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+Drop table [dbo].[FileBlacklist];
+GO
+
+CREATE TABLE [dbo].[FileBlacklist](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[OriginalFilename] [nvarchar](350) NOT NULL,
+	[FullpathToFile] [nvarchar](500) NOT NULL
+) ON [PRIMARY]
+
+GO
+
 
 
