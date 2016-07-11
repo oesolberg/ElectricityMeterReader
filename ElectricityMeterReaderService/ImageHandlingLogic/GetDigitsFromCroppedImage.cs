@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using ElMeInterfaces;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
@@ -14,7 +15,7 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
     public class GetDigitsFromCroppedImage
     {
 
-        private List<DigitTemplateInfo> _digitTemplateInfoList;
+        private List<ITemplateData> _digitTemplateInfoList;
 
         public GetDigitsFromCroppedImage()
         {
@@ -26,12 +27,12 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
 
        
 
-        public DigitsAndDigitRectangles Process(Image<Bgr, byte> numberPlateImage, List<DigitTemplateInfo> digitTemplateInfoList)
+        public DigitsAndDigitRectangles Process(Image<Bgr, byte> numberPlateImage, List<ITemplateData> digitTemplateInfoList)
         {
             _digitTemplateInfoList = digitTemplateInfoList;
             //Lighten numberPlageImage
             //var lightenedNumberPlateImage = LightenNumberPlateImage(numberPlateImage);
-            CvInvoke.Imshow("test",numberPlateImage);
+            //CvInvoke.Imshow("test",numberPlateImage);
             var digitData = new DigitsAndDigitRectangles();
             foreach (var digitTemplateInfo in _digitTemplateInfoList)
             {
@@ -57,11 +58,11 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
             return resultImage;
         }
 
-        private IEnumerable<DigitAndDigitRectangle> FindDigit(Image<Bgr, byte> source, DigitTemplateInfo digitTemplateInfo)
+        private IEnumerable<DigitAndDigitRectangle> FindDigit(Image<Bgr, byte> source, ITemplateData digitTemplateInfo)
         {
-            if (!File.Exists(digitTemplateInfo.TemplateFilePath)) return null;
+            if (!File.Exists(digitTemplateInfo.TemplatePath)) return null;
 
-            Image<Bgr, byte> template = new Image<Bgr, byte>(digitTemplateInfo.TemplateFilePath);
+            Image<Bgr, byte> template = new Image<Bgr, byte>(digitTemplateInfo.TemplatePath);
 
 
             var foundRectanglesList = new List<Rectangle>();
@@ -70,7 +71,7 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
             DigitAndDigitRectangle findResult = new DigitAndDigitRectangle() { ResultImage = source };
             do
             {
-                findResult = SearchImageForDigit(findResult.ResultImage, template, digitTemplateInfo.DigitNumber);
+                findResult = SearchImageForDigit(findResult.ResultImage, template, digitTemplateInfo.NumberValue);
                 if (findResult != null)
                 {
                     foundRectanglesList.Add(findResult.FoundRectangle);

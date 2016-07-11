@@ -208,6 +208,10 @@
       <Project>{d4b1e7ec-aba2-44b6-a51f-fab675d1929c}</Project>
       <Name>ElMeInterfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TemplateGetter\TemplateGetter.csproj">
+      <Project>{7bc618a7-6c30-40c9-a1c0-bb947f7d806d}</Project>
+      <Name>TemplateGetter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
