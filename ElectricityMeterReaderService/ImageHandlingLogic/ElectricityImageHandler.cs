@@ -74,8 +74,7 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
 
         private  DigitsAndDigitRectangles GetDigitData(Image<Bgr, byte> numberPlateImage)
         {
-            //var digitListCreator = new CreateDigitList();
-            //var digitList = digitListCreator.Execute();
+            
             
             var digitDataExtractor = new GetDigitsFromCroppedImage();
             var foundDigitData = digitDataExtractor.Process(numberPlateImage, _templateDataList);

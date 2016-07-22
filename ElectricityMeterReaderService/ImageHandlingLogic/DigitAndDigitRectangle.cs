@@ -9,5 +9,6 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
         public Rectangle FoundRectangle { get; set; }
         public Image<Bgr, byte> ResultImage { get; set; }
         public int FoundInteger { get; set; }
+        public string DigitImageName { get; set; }
     }
 }

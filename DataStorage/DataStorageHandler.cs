@@ -29,6 +29,10 @@ namespace DataStorage
                 var isValid = _numberValidator.IsElectricityNumberValid(imageData);
                 _imageStorageHandler.Execute(imageData, isValid);
             }
+            else
+            {
+                _imageStorageHandler.BlackListFile(imageData.OriginalFilename, "not known cause I fracked up");
+            }
 
         }
 

@@ -10,7 +10,7 @@ namespace TemplateGetter.FileSorting
         private readonly string[] _allowedFileExtensionsArray;
         public FileArraySorter()
         {
-            _allowedFileExtensionsArray =new string[] { "jpg","jpeg","png"};
+            _allowedFileExtensionsArray =new string[] { ".jpg",".jpeg",".png"};
         }
         public string[] GetImageFilepaths(string[] fileArray)
         {

@@ -21,8 +21,6 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
         {
             //Create digittemplates
             
-            
-
         }
 
        
@@ -71,7 +69,7 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
             DigitAndDigitRectangle findResult = new DigitAndDigitRectangle() { ResultImage = source };
             do
             {
-                findResult = SearchImageForDigit(findResult.ResultImage, template, digitTemplateInfo.NumberValue);
+                findResult = SearchImageForDigit(findResult.ResultImage, template, digitTemplateInfo);
                 if (findResult != null)
                 {
                     foundRectanglesList.Add(findResult.FoundRectangle);
@@ -83,8 +81,9 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
 
         }
 
-        private DigitAndDigitRectangle SearchImageForDigit(Image<Bgr, byte> imageToSearch, Image<Bgr, byte> searchTemplate, int numberToSearchFor = 0)
+        private DigitAndDigitRectangle SearchImageForDigit(Image<Bgr, byte> imageToSearch, Image<Bgr, byte> searchTemplate, ITemplateData templateData)
         {
+            int numberToSearchFor = templateData.NumberValue;
             using (Image<Gray, float> result = imageToSearch.MatchTemplate(searchTemplate, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed))
             {
                 double[] minValues, maxValues;
@@ -105,7 +104,7 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
                         imageToSearch.Draw(match, new Bgr(Color.Gray), 3);
                     }
                     
-                    return new DigitAndDigitRectangle() { FoundRectangle = match, ResultImage = imageToSearch, FoundInteger = numberToSearchFor };
+                    return new DigitAndDigitRectangle() { FoundRectangle = match, ResultImage = imageToSearch, FoundInteger = numberToSearchFor,DigitImageName = templateData.TemplatePath};
                 }
 
             }

@@ -52,43 +52,44 @@ namespace ElectricityMeterReaderService
 
         private void fileSystemWatcher_Changed(object sender, System.IO.FileSystemEventArgs e)
         {
-            var stopWatch = new Stopwatch();
-            //Some file has changed.
-            stopWatch.Start();
-            var folderScanner = new ScanFolder.ProcessFolder();
-            folderScanner.Execute(_folderToWatch, _filefilter);
-            stopWatch.Stop();
-            LogToConsoleIfPossible("Added missing images in " + stopWatch.ElapsedMilliseconds.ToString("N1") + " ms.");
-
-            Thread.Sleep(_sleepInterval); //Sleep 10 seconds to get the file when it is done saving
+            Thread.Sleep(_sleepInterval);
             if (e.ChangeType == WatcherChangeTypes.Created && FileExists(e.FullPath))
             {
-                stopWatch=new Stopwatch();
+                var stopWatch = new Stopwatch();
+                //Some file has changed.
                 stopWatch.Start();
-                LogToConsoleIfPossible(e.FullPath);
-                LogToConsoleIfPossible(e.ChangeType.ToString());
-
-                var imageHandler = new ElectricityImageHandler();
-                var imageData=imageHandler.DoImageProcessing(e.FullPath);
-                if (imageData != null)
-                {
-                    var dbStore = new DataStorage.DataStorageHandler();
-                    dbStore.DoStorage(imageData);
-                }
+                var folderScanner = new ScanFolder.ProcessFolder();
+                folderScanner.Execute(_folderToWatch, _filefilter);
                 stopWatch.Stop();
-                
-                LogToConsoleIfPossible("Done processing image in " + stopWatch.ElapsedMilliseconds.ToString("N")+" ms");
-                if (imageData != null)
-                {
-                    LogToConsoleIfPossible("Number found: " + imageData.ImageNumber.ToString("000000"));
-                }
-                else
-                {
-                    LogToConsoleIfPossible("No data extracted");
-                }
-                    
-
+                LogToConsoleIfPossible("Added missing images in " + stopWatch.ElapsedMilliseconds.ToString("N1") + " ms.");
             }
+            //Thread.Sleep(_sleepInterval); //Sleep 10 seconds to get the file when it is done saving
+            //if (e.ChangeType == WatcherChangeTypes.Created && FileExists(e.FullPath))
+            //{
+            //    stopWatch=new Stopwatch();
+            //    stopWatch.Start();
+            //    LogToConsoleIfPossible(e.FullPath);
+            //    LogToConsoleIfPossible(e.ChangeType.ToString());
+
+            //    var imageHandler = new ElectricityImageHandler();
+            //    var imageData=imageHandler.DoImageProcessing(e.FullPath);
+            //    if (imageData != null)
+            //    {
+            //        var dbStore = new DataStorage.DataStorageHandler();
+            //        dbStore.DoStorage(imageData);
+            //    }
+            //    stopWatch.Stop();
+                
+            //    LogToConsoleIfPossible("Done processing image in " + stopWatch.ElapsedMilliseconds.ToString("N")+" ms");
+            //    if (imageData != null)
+            //    {
+            //        LogToConsoleIfPossible("Number found: " + imageData.ImageNumber.ToString("000000"));
+            //    }
+            //    else
+            //    {
+            //        LogToConsoleIfPossible("No data extracted");
+            //    }
+           // }
         }
 
         private bool FileExists(string fullPath)

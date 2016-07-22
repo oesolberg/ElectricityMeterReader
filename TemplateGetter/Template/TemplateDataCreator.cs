@@ -17,10 +17,10 @@ namespace TemplateGetter.Template
                 if (!FilepathIsAnAcceptedFile(filepath)) continue;
 
                 var templateData = ConvertFilepathToTemplateData(filepath);
-                if(templateData.NumberValue>-1)
+                if(templateData!=null && templateData.NumberValue>-1)
                     templateDataList.Add(templateData);
             }
-            return null;
+            return templateDataList;
         }
 
         private ITemplateData ConvertFilepathToTemplateData(string filepath)
@@ -35,7 +35,7 @@ namespace TemplateGetter.Template
         {
             var filename = Path.GetFileNameWithoutExtension(filepath);
 
-            if (!string.IsNullOrWhiteSpace(filename)) return -1;
+            if (string.IsNullOrWhiteSpace(filename)) return -1;
 
             var firstDigitAsString = filename.Substring(0, 1);
 
