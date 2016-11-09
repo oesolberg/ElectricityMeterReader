@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -30,13 +31,14 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
         {
         
 
-            Image<Bgr, byte> source = new Image<Bgr, byte>(_filepathToImage);
-            Image<Bgr, byte> template = new Image<Bgr, byte>(_filepathToTemplate);
+            
 
             Image<Bgr, byte> imageToReturn = null;
 
             try
             {
+                Image<Bgr, byte> source = new Image<Bgr, byte>(_filepathToImage);
+                Image<Bgr, byte> template = new Image<Bgr, byte>(_filepathToTemplate);
                 using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.Ccoeff))
                 {
                     //Image<Gray, float> resultImage = result.Mul(resultMask.Pow(-1));
@@ -58,9 +60,9 @@ namespace ElectricityMeterReaderService.ImageHandlingLogic
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Debug.Print(ex.Message);
                 return null;
             }
             return imageToReturn;

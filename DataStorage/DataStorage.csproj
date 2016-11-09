@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Config\ConfigReader.cs" />
     <Compile Include="DataHandling\GetAllImageNames.cs" />
+    <Compile Include="DataHandling\GetDateTimeForPreviousValidNumber.cs" />
     <Compile Include="DataHandling\StoreImageToDb.cs" />
     <Compile Include="DataStorageHandler.cs" />
     <Compile Include="DataHandling\ElectricityData.cs" />
