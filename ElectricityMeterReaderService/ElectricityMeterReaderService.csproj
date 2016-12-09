@@ -233,6 +233,9 @@
     <Content Include="Templates\4_p10.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Templates\4_p10000.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Templates\5_new.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
