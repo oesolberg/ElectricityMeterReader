@@ -27,10 +27,10 @@ namespace ElectricityMeterReaderService
             fileSystemWatcher.Created += fileSystemWatcher_Changed;
         }
 
-        
+
         protected override void OnStart(string[] args)
         {
-            _filefilter= ConfigurationManager.AppSettings["filter"];
+            _filefilter = ConfigurationManager.AppSettings["filter"];
             fileSystemWatcher.Filter = _filefilter;
             _folderToWatch = ConfigurationManager.AppSettings["folder"];
             fileSystemWatcher.Path = _folderToWatch;
@@ -41,7 +41,7 @@ namespace ElectricityMeterReaderService
             {
                 _sleepInterval = sleepIntervalFromConfigConvertedToInt;
             }
-            
+
             //ScanFolderAndProcessMissingImages();
 
         }
@@ -60,8 +60,11 @@ namespace ElectricityMeterReaderService
                 stopWatch.Start();
                 var folderScanner = new ScanFolder.ProcessFolder();
                 folderScanner.Execute(_folderToWatch, _filefilter);
-                stopWatch.Stop();
-                LogToConsoleIfPossible("Added missing images in " + stopWatch.ElapsedMilliseconds.ToString("N1") + " ms.");
+                if (stopWatch != null)
+                {
+                    stopWatch.Stop();
+                    LogToConsoleIfPossible("Added missing images in " + stopWatch.ElapsedMilliseconds.ToString("N1") + " ms.");
+                }
             }
             //Thread.Sleep(_sleepInterval); //Sleep 10 seconds to get the file when it is done saving
             //if (e.ChangeType == WatcherChangeTypes.Created && FileExists(e.FullPath))
@@ -79,7 +82,7 @@ namespace ElectricityMeterReaderService
             //        dbStore.DoStorage(imageData);
             //    }
             //    stopWatch.Stop();
-                
+
             //    LogToConsoleIfPossible("Done processing image in " + stopWatch.ElapsedMilliseconds.ToString("N")+" ms");
             //    if (imageData != null)
             //    {
@@ -89,7 +92,7 @@ namespace ElectricityMeterReaderService
             //    {
             //        LogToConsoleIfPossible("No data extracted");
             //    }
-           // }
+            // }
         }
 
         private bool FileExists(string fullPath)

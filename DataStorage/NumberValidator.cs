@@ -28,7 +28,7 @@ namespace DataStorage
             var numberOfDaysSinceLastValidNumber = (imageData.FileCreatedDateTime - dateTimeForLastValueInDb).TotalDays;
             //Compare with db if we have a value
             if (lastValueInDb > 1 &&
-                ((readElectricityNumber < lastValueInDb) || (readElectricityNumber > (lastValueInDb + (200*numberOfDaysSinceLastValidNumber)))))
+                ((readElectricityNumber < lastValueInDb) || (readElectricityNumber > (lastValueInDb + (300*numberOfDaysSinceLastValidNumber)))))
             {
                 return false;
             }
